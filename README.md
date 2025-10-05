@@ -9,13 +9,20 @@ If the implementation contains initialization or sensitive functions (such as _b
 MErc20Delegator contract(Smart Contract - Moonwell ETH)
 
 MErc20Delegator.sol code:
-![PoC Diagram](images/code-code-MErc20Delegator.png)
-![PoC Diagram](images/code-code-MErc20Delegator-2.png)
+![PoC Diagram](images/code-MErc20Delegator.png)
+![PoC Diagram](images/code-MErc20Delegator-2.png)
 
 ##Root Cause:
 Lack of access control (onlyAdmin) on delegateToImplementation.
 
 The implementation acts as the execution target, exposing critical functionality such as transfer, transferFrom, mint, etc., without restrictions.
+
+Links to Root Cause
+
+- [MErc20Delegator.sol#L446-L448](https://github.com/akupemulaygbaik/PoC-Moonwell/blob/main/contracts/MErc20Delegator.sol#L446-L448)  
+ 
+
+- [MErc20Delegator.sol#L457-L465](https://github.com/akupemulaygbaik/PoC-Moonwell/blob/main/contracts/MErc20Delegator.sol#L457-L465)
 
 ##Proof of Concept
 (test/DelegateAccess.t.sol) code :
