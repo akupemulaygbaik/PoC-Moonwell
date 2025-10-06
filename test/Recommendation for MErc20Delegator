@@ -1,0 +1,24 @@
+// --- add modifier if not present ---
+modifier onlyAdmin() {
+    require(msg.sender == admin, "MErc20Delegator: only admin");
+    _;
+}
+
+// --- create internal helper (does the actual delegateTo) ---
+function _delegateToImplementation(address impl, bytes memory data) internal returns (bytes memory) {
+    return delegateTo(impl, data);
+}
+
+// --- public admin wrapper (only admin can call) ---
+function delegateToImplementation(bytes memory data) public onlyAdmin returns (bytes memory) {
+    return _delegateToImplementation(implementation, data);
+}
+
+function delegateToViewImplementation(bytes memory data) public view onlyAdmin returns (bytes memory) {
+    // implement view wrapper safely (if previously used)
+    (bool success, bytes memory returnData) = address(this).staticcall(
+        abi.encodeWithSignature("delegateToImplementation(bytes)", data)
+    );
+    require(success, "delegateToViewImplementation failed");
+    return returnData;
+}
